@@ -33,7 +33,9 @@ Add this SDK to your **host app**:
 ```yaml
 dependencies:
   consultation_sdk:
-    path: ../consultation_sdk
+    git:
+    url: https://github.com/riyadzia/clinicall_sdk.git
+    ref: main
 ```
 
 Then run:
@@ -46,19 +48,20 @@ flutter pub get
 
 ## 🧩 Initialization
 
-In your host app’s `main.dart`:
+In your app’s `main.dart`:
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:consultation_sdk/consultation_sdk.dart';
 
+// Add this line
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize SDK with the navigator key
-  ConsultationSdk.instance.initialize(navigatorKey);
+  ConsultationSdk().initialize(serviceKey: "your_service_key_here",navigatorKey: navigatorKey);
 
   runApp(MyApp());
 }
@@ -67,6 +70,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Call same navigator key here
       navigatorKey: navigatorKey,
       home: HomeScreen(),
     );
@@ -86,20 +90,19 @@ final sdk = ConsultationSdk.instance;
 final token = await sdk.authenticate(
   countryLetterCode: "BD",
   dialCode: "880",
-  phoneNumber: "1712345678",
-  serviceToken: "your_service_token_here",
+  phoneNumber: "1715000000",
+  authToken: "auth_token_here",// Previous auth token for auto-login
 );
 ```
 
 ### 📋 Parameters
 
-| Parameter | Type | Required | Description |
-|------------|------|-----------|-------------|
+| Parameter | Type | Required | Description                            |
+|------------|------|-----------|----------------------------------------|
 | `countryLetterCode` | `String` | ✅ | Two-letter ISO country code (e.g., BD) |
-| `dialCode` | `String` | ✅ | Country dial code (e.g., 880) |
-| `phoneNumber` | `String` | ✅ | User’s phone number |
-| `serviceToken` | `String` | ✅ | Token from your backend |
-| `authToken` | `String?` | ❌ | Previous auth token for auto-login |
+| `dialCode` | `String` | ✅ | Country dial code (e.g., 880)          |
+| `phoneNumber` | `String` | ✅ | User’s phone number (e.g., 1715000000) |
+| `authToken` | `String?` | ❌ | Previous auth token for auto-login     |
 
 ### 🧾 Returns
 `Future<String>` — returns a valid authentication token on success.
@@ -112,14 +115,17 @@ final token = await sdk.authenticate(
 ElevatedButton(
   onPressed: () async {
     try {
-      final token = await ConsultationSdk.instance.authenticate(
+      await ConsultationSdk.instance.authenticate(
         countryLetterCode: "BD",
         dialCode: "880",
         phoneNumber: "1712345678",
-        serviceToken: "my_service_token",
-      );
-      print("✅ Authenticated Token: $token");
+        authToken: "auth_token_here",
+      ).then((token) {
+        // Save the token for next time auto-login.
+        print("Successfully Logged In: $token");
+      });
     } catch (e) {
+      // Handle errors
       print("❌ Error: $e");
     }
   },
@@ -148,25 +154,13 @@ try {
 }
 ```
 
-### Common Errors
-
-| Error Type | Cause |
-|-------------|--------|
-| `NetworkError` | No internet connection |
-| `InvalidTokenError` | Invalid service token |
-| `OtpError` | OTP sending or verification failed |
-| `UnknownError` | Any unexpected runtime error |
-
-
----
 
 ## 🧑‍💻 Developer Notes
 
 - Initialize the SDK before calling any function.
 - Always pass a valid `navigatorKey`.
 - Do **not** manually register dependencies already handled by SDK.
-- Supports **Flutter 3.19+** and **Dart 3.2+**.
-
+- Always update with the latest SDK version using the command (flutter pub upgrade --major-versions).
 ---
 
 ## 🧾 License
