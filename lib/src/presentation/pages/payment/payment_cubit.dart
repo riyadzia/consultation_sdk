@@ -26,6 +26,8 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   Map<String,dynamic> fuckMap = {};
 
+  String get userId => "${_authCubit.state.userProfileModel?.id}";
+
   void paymentOpen(Map<String, dynamic> dataMap) {
     emit(
       state.copyWith(
@@ -40,6 +42,10 @@ class PaymentCubit extends Cubit<PaymentState> {
 
   void changePaymentType(BankTypeModel paymentType) {
     emit(state.copyWith(paymentType: paymentType));
+  }
+
+  void paymentSuccessStatus(bool status){
+    emit(state.copyWith(paymentSuccess: status));
   }
 
   int bkashCallCount = 0;
@@ -89,7 +95,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           print("signature response: $data");
         }
 
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => CliniCallWebView(
@@ -98,11 +104,7 @@ class PaymentCubit extends Cubit<PaymentState> {
               isBackHome: true,
             ),
           ),
-        ).then((value) {
-          if (value != null && value) {
-            // Get.offAllNamed(Routes.mainScreen);
-          }
-        });
+        );
       },
     );
   }
@@ -224,18 +226,13 @@ class PaymentCubit extends Cubit<PaymentState> {
       // debugPrint("payment data: ${json.encode(paymentData)}");
     }
 
-    await Navigator.push(
+    await Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) =>
             EblPaymentScreen(paymentData: paymentData, signature: signature),
       ),
-    ).then((value) {
-      if (value != null && value) {
-        //todo: Restart App
-        // Get.offAllNamed(Routes.mainScreen);
-      }
-    });
+    );
   }
 
   Future<void> buyPackage(context) async {

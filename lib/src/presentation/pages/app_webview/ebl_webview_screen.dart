@@ -28,84 +28,70 @@ class _EblPaymentScreenState extends State<EblPaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (isSuccess) {
-          // Navigator.pushAndRemoveUntil(
-          //   context,
-          //   MaterialPageRoute(builder: (_) => MainScreen()),
-          //   (Route<dynamic> route) => false,
-          // );
-          return Future.value(true);
-        } else {
-          return Future.value(true);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: CustomText(text: "Payment", fontSize: getWidth(16)),
-          toolbarHeight: 70,
-          flexibleSpace: const AppPinkyCircleGradient(),
-          leading: PageBackBorderButton(
-            onPressed: () {
-              // print("$isSuccess");
-              // return;
-              if (isSuccess) {
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   MaterialPageRoute(builder: (_) => MainScreen()),
-                //   (Route<dynamic> route) => false,
-                // );
-              } else {
-                Navigator.pop(context, isSuccess);
-              }
-            },
-          ),
-        ),
-        body: InAppWebView(
-          initialData: InAppWebViewInitialData(
-            data: _generateHtmlForm(),
-            mimeType: "text/html",
-            encoding: "utf-8",
-            baseUrl: WebUri(BaseUrl().eblPaymentLive),
-          ),
-          onWebViewCreated: (controller) {
-            // Automatically submit the form when the web view loads
-            controller.evaluateJavascript(
-              source: "document.forms[0].submit();",
-            );
-          },
-          onLoadStart: (controller, url) {
-            if (url != null) {
-              if (url.toString().contains(
-                "${BaseUrl().webSiteUrl}ebl-receipt-mobile",
-              )) {
-                isSuccess = true;
-              }
-            }
-            if (kDebugMode) {
-              print("(((((((((((((($url))))))))))))))");
-            }
-          },
-          onLoadStop: (controller, url) {
-            if (url != null) {
-              if (url.toString().contains(
-                "${BaseUrl().webSiteUrl}ebl-receipt-mobile",
-              )) {
-                isSuccess = true;
-              }
-            }
-          },
-          onUpdateVisitedHistory: (controller, url, androidIsReload) {
-            if (url != null) {
-              if (url.toString().contains(
-                "${BaseUrl().webSiteUrl}ebl-receipt-mobile",
-              )) {
-                isSuccess = true;
-              }
+    return Scaffold(
+      appBar: AppBar(
+        title: CustomText(text: "Payment", fontSize: getWidth(16)),
+        toolbarHeight: 70,
+        flexibleSpace: const AppPinkyCircleGradient(),
+        leading: PageBackBorderButton(
+          onPressed: () {
+            // print("$isSuccess");
+            // return;
+            if (isSuccess) {
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(builder: (_) => MainScreen()),
+              //   (Route<dynamic> route) => false,
+              // );
+            } else {
+              Navigator.pop(context, isSuccess);
             }
           },
         ),
+      ),
+      body: InAppWebView(
+        initialData: InAppWebViewInitialData(
+          data: _generateHtmlForm(),
+          mimeType: "text/html",
+          encoding: "utf-8",
+          baseUrl: WebUri(BaseUrl().eblPaymentLive),
+        ),
+        onWebViewCreated: (controller) {
+          // Automatically submit the form when the web view loads
+          controller.evaluateJavascript(
+            source: "document.forms[0].submit();",
+          );
+        },
+        onLoadStart: (controller, url) {
+          if (url != null) {
+            if (url.toString().contains(
+              "${BaseUrl().webSiteUrl}ebl-receipt-mobile",
+            )) {
+              isSuccess = true;
+            }
+          }
+          if (kDebugMode) {
+            print("(((((((((((((($url))))))))))))))");
+          }
+        },
+        onLoadStop: (controller, url) {
+          if (url != null) {
+            if (url.toString().contains(
+              "${BaseUrl().webSiteUrl}ebl-receipt-mobile",
+            )) {
+              isSuccess = true;
+            }
+          }
+        },
+        onUpdateVisitedHistory: (controller, url, androidIsReload) {
+          if (url != null) {
+            if (url.toString().contains(
+              "${BaseUrl().webSiteUrl}ebl-receipt-mobile",
+            )) {
+              isSuccess = true;
+            }
+          }
+        },
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:consultation_sdk/src/model/active_health_card_model.dart';
 import 'package:consultation_sdk/src/presentation/pages/calling/call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,19 +57,29 @@ class HealthPackageCubit extends Cubit<HealthPackageState> {
 
   // Get Active Health Card
   Future<void> getActiveHealthCard(String userId) async {
-    emit(state.copyWith(isHealthCardLoading: true));
+    emit(state.copyWith(isHealthCardLoading: true,activeHealthCardModel: null));
     final result = await _repository.getActiveHealthCard(userId);
     result.fold(
       (error) {
-        emit(state.copyWith(isHealthCardLoading: false));
+        emit(state.copyWith(isHealthCardLoading: false,activeHealthCardModel: null));
       },
       (data) {
-        emit(
-          state.copyWith(
-            isHealthCardLoading: false,
-            activeHealthCardModel: data,
-          ),
-        );
+        if(getIsCardActiveForAllByData(data)){
+          emit(
+            state.copyWith(
+              isHealthCardLoading: false,
+              activeHealthCardModel: data,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              isHealthCardLoading: false,
+              activeHealthCardModel: null,
+            ),
+          );
+        }
+
       },
     );
   }
@@ -90,6 +101,19 @@ class HealthPackageCubit extends Cubit<HealthPackageState> {
     } else {
       return false;
     }
+  }
+
+  bool getIsCardActiveForAllByData(ActiveHealthCardModel data) {
+      String expiryDateString = data.packageExpiredDate;
+      DateTime expiredDate = DateTime.parse(expiryDateString);
+      int days = expiredDate.compareTo(DateTime.now());
+      if (days != -1 &&
+          data.paymentStatus == "success" &&
+          data.isActive) {
+        return true;
+      } else {
+        return false;
+      }
   }
 
   // Call Doctor Action

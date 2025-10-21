@@ -3,11 +3,11 @@
 A Flutter SDK for integrating **CliniCall Doctor Consultation and Package Purchase features** into any Flutter app.
 
 This SDK provides:
-- 🔐 OTP-based phone authentication
-- 📱 Auto navigation to a customizable main screen
-- 🧭 Global navigator key integration
+- 🔐 **OTP**-based phone authentication
+- 📱 Auto navigation to **MainScreen**
+- 🧭 Global **navigator-key** integration
 - 🚀 Simple one-line initialization
-- ⚡ Real-time Communication using **socket.io**
+- ⚡  Real-time Communication using **socket.io**
 - 💳 Supported Payment Gateways: **Card & MFS**
 
 
@@ -169,7 +169,7 @@ try {
 ## 🧾 License
 
 ```
-Copyright © 2025
+Copyright © 2025 CliniCall Limited.
 All rights reserved to the CliniCall Limited.
 Unauthorized distribution or modification is prohibited.
 ```

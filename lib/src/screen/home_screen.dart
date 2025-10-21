@@ -99,7 +99,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                       builder: (context) => PackagePaymentScreen(),
                     ),
-                  );
+                  ).then((value){
+                    String userId = "${context.read<AuthCubit>().state.userProfileModel?.id}";
+                    context.read<HealthPackageCubit>().getActiveHealthCard(userId);
+                  });
                 }
               },
             ),

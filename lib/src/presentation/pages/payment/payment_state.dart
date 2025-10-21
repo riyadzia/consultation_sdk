@@ -8,6 +8,7 @@ class PaymentState {
   final int discountPercentage;
   final bool isLoading;
   final int? startPayment;
+  final bool paymentSuccess;
 
   PaymentState({
     required this.dataMap,
@@ -17,6 +18,7 @@ class PaymentState {
     this.discountPercentage = 0,
     this.isLoading = false,
     this.startPayment = 0,
+    this.paymentSuccess = false,
   });
 
   PaymentState copyWith({
@@ -27,6 +29,7 @@ class PaymentState {
     int? discountPercentage,
     bool? isLoading,
     int? startPayment,
+    bool? paymentSuccess,
   }) {
     return PaymentState(
       dataMap: dataMap ?? this.dataMap,
@@ -36,6 +39,7 @@ class PaymentState {
       discountPercentage: discountPercentage ?? this.discountPercentage,
       isLoading: isLoading ?? this.isLoading,
       startPayment: startPayment ?? this.startPayment,
+      paymentSuccess: paymentSuccess ?? this.paymentSuccess,
     );
   }
 }
