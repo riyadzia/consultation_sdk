@@ -18,9 +18,9 @@ This SDK provides:
 
 ✅ Phone authentication via OTP  
 ✅ Service token–based secure login  
-✅ Auto redirect after authentication
-✅ Audio/Video Calling for Doctor Consultation 24/7
-✅ Package Purchase for Doctor Consultation
+✅ Auto redirect after authentication  
+✅ Audio/Video Calling for Doctor Consultation 24/7  
+✅ Package Purchase for Doctor Consultation  
 
 
 
@@ -160,7 +160,10 @@ try {
 - Initialize the SDK before calling any function.
 - Always pass a valid `navigatorKey`.
 - Do **not** manually register dependencies already handled by SDK.
-- Always update with the latest SDK version using the command (flutter pub upgrade --major-versions).
+- Always update with the latest SDK version using the command - 
+  ```flutter pub upgrade --major-versions```.
+
+
 ---
 
 ## 🧾 License
@@ -170,6 +173,7 @@ Copyright © 2025
 All rights reserved to the CliniCall Limited.
 Unauthorized distribution or modification is prohibited.
 ```
+
 
 ---
 
