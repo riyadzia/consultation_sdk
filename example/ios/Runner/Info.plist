@@ -45,5 +45,27 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+    	<key>NSAllowsArbitraryLoadsInWebContent</key>
+    	<true/>
+    	<key>NSAllowsLocalNetworking</key>
+    	<true/>
+    </dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Allow access to microphone for Audio/video call during doctor consultation</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Updating user profile and using app functionality and audio/video call for doctor consultation</string>
+	<key>NSDocumentDirectory</key>
+	<string>Allow access to document directory for caching some data for using app better performance</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow access to microphone for Audio/video call during doctor consultation</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+		<string>voip</string>
+	</array>
 </dict>
 </plist>
