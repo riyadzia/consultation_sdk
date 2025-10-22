@@ -91,7 +91,7 @@ class _CallWaitingScreenState extends State<CallWaitingScreen> {
 
   final audioPlayer = AudioPlayer();
   void playWaitingTone()async {
-    await audioPlayer.setAsset("assets/audio/call_waiting.wav");
+    await audioPlayer.setUrl("http://clinicall-files.obs.as-south-208.rcloud.reddotdigitalit.com/upload-file-22102025T113906-call_waiting.wav");
     audioPlayer.setLoopMode(LoopMode.one);
 
     if(widget.isVideo){

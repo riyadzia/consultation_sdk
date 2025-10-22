@@ -14,6 +14,7 @@ import 'package:consultation_sdk/src/presentation/pages/calling/calling_state.da
 import 'package:consultation_sdk/src/presentation/pages/calling/calling_state.dart';
 import 'package:consultation_sdk/src/presentation/pages/health_package/health_package_state.dart';
 import 'package:consultation_sdk/consultation_sdk.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../di/injector.dart';
 
@@ -75,6 +76,9 @@ class CallingCubit extends Cubit<CallingState> {
 
   // Initializes Agora SDK
   Future<void> startVideoCalling(String zz) async {
+    if(state.isVideoOn == true){
+      WakelockPlus.enable();
+    }
     assignedSocket();
     onKernelStatus();
     await _requestPermissions();
@@ -100,6 +104,7 @@ class CallingCubit extends Cubit<CallingState> {
     }
     CallManager.stopForegroundCallService();
     stopOutgoingRingtone();
+    WakelockPlus.disable();
     emit(
       state.copyWith(
         callingStatus: CallingStatus.initial,
