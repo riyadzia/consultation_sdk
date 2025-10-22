@@ -61,6 +61,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow access to microphone for Audio/video call during doctor consultation</string>
 	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Updating user profile and using app functionality</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
