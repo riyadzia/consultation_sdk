@@ -19,7 +19,7 @@ class ConsultationSdkAuthInit extends ConsultationSdkAuth {
   }) async {
     final completer = Completer<String>();
     if(authToken == null || authToken == ""){
-      Utils.loadingDialog(ConsultationSdk().navigatorKey!.currentState!.context);
+      Utils.loadingDialog(ConsultationSdk().navigatorKey.currentState!.context);
       try {
         final response = await MyApi().sendOtp(
           countryLetterCode: countryLetterCode,
@@ -27,13 +27,13 @@ class ConsultationSdkAuthInit extends ConsultationSdkAuth {
           phoneNumber: phoneNumber,
           serviceToken: serviceToken,
         );
-        Utils.closeDialog(ConsultationSdk().navigatorKey!.currentState!.context);
+        Utils.closeDialog(ConsultationSdk().navigatorKey.currentState!.context);
         response.fold((error){
           Utils.showMiddleToast(error.message);
           completer.completeError(error.message);
           return completer.future;
         }, (data){
-          ConsultationSdk().navigatorKey?.currentState?.push(
+          ConsultationSdk().navigatorKey.currentState?.push(
             MaterialPageRoute(
               builder: (_) => MainScreen(
                 countryLetterCode: countryLetterCode,
@@ -56,7 +56,7 @@ class ConsultationSdkAuthInit extends ConsultationSdkAuth {
 
       }
     } else {
-      ConsultationSdk().navigatorKey?.currentState?.push(
+      ConsultationSdk().navigatorKey.currentState?.push(
         MaterialPageRoute(
           builder: (_) => MainScreen(
             countryLetterCode: countryLetterCode,

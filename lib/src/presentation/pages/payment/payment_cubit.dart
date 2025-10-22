@@ -128,10 +128,16 @@ class PaymentCubit extends Cubit<PaymentState> {
     return {};
   }
 
-  void makeEblSignature(BuildContext context) async {
+  int xx = 0;
+  Future<void> makeEblSignature(BuildContext context) async {
     if(fuckMap.isEmpty){
       Map<String,dynamic>? xyz = await getHamzaLa();
       if(xyz.isEmpty){
+        if(xx == 0){
+          xx++;
+          await makeEblSignature(context);
+          return;
+        }
         Utils.showMiddleToast("Token is invalid!Try again");
         return;
       }

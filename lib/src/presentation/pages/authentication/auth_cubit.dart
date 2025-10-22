@@ -177,6 +177,7 @@ class MyApi {
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message, e.statusCode));
     } catch (e) {
+      print("send otp: ${e.toString()}");
       return Left(ServerFailure(e.toString(), 410));
     }
   }

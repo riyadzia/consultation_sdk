@@ -1,4 +1,5 @@
 import 'package:consultation_sdk/consultation_sdk_auth.dart';
+import 'package:consultation_sdk/src/di/data_source_module.dart';
 import 'package:flutter/material.dart';
 
 import 'consultation_sdk_platform_interface.dart';
@@ -18,6 +19,37 @@ class ConsultationSdk {
   }) {
     _serviceKey = serviceKey;
     _navigatorKey = navigatorKey;
+    initDataSourceModule();
+  }
+
+  /// Closes the SDK and returns to host app
+  void close() {
+    try {
+      if (navigatorKey.currentState?.canPop() ?? false) {
+        navigatorKey.currentState?.pop();
+      } else {
+        // If can't pop, forcefully exit SDK screens
+        Navigator.of(navigatorKey.currentContext!).pop();
+      }
+      debugPrint("✅ Consultation SDK closed successfully");
+    } catch (e) {
+      debugPrint("❌ Error while closing SDK: $e");
+    }
+  }
+
+  Future<bool> onBackPressed() async {
+    try {
+      if (navigatorKey.currentState?.canPop() ?? false) {
+        navigatorKey.currentState?.pop();
+        return false;
+      } else {
+        Navigator.of(navigatorKey.currentContext!).pop();
+        return false;
+      }
+    } catch (e) {
+      debugPrint("❌ Error while closing SDK: $e");
+      return true;
+    }
   }
 
   String? get serviceKey => _serviceKey;

@@ -1,3 +1,4 @@
+import 'package:consultation_sdk/consultation_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,7 +93,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
           slivers: [
             SliverAppBar(
               pinned: true,
-              leading: const PageBackBorderButton(),
+              leading: PageBackBorderButton(
+                onPressed: (){
+                  ConsultationSdk().close();
+                },
+              ),
               title: CustomText(
                 text: "OTP Verification",
                 fontSize: getWidth(18),

@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:consultation_sdk/consultation_sdk.dart';
+import 'package:consultation_sdk/consultation_sdk_auth.dart';
+import 'package:consultation_sdk/src/global_widget/page_back__border_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:consultation_sdk/src/component/call_option_dialog.dart';
@@ -65,13 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-          return false;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if(didPop){
+          ConsultationSdk().close();
         }
-        return true;
       },
       child: Scaffold(
         backgroundColor: AppColors.white,
@@ -111,21 +113,32 @@ class _HomeScreenState extends State<HomeScreen> {
             slivers: [
               /// AppBar
               SliverAppBar(
-                title: Column(
+                title: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (!isMobile()) ...[SizedBox(height: getWidth(12))],
-                    CustomImage(path: AppIcons.logoText, height: getWidth(26)),
-                    CustomText(
-                      text: "Complete Healthcare in One App",
-                      color: AppColors.secondaryColor,
-                      fontSize: getWidth(12),
-                      fontWeight: FontWeight.w400,
+                    PageBackBorderButton(
+                      onPressed: (){
+                        ConsultationSdk().close();
+                      },
+                    ),
+                    SizedBox(width: getWidth(10),),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (!isMobile()) ...[SizedBox(height: getWidth(12))],
+                        CustomImage(path: AppIcons.logoText, height: getWidth(26)),
+                        CustomText(
+                          text: "Complete Healthcare in One App",
+                          color: AppColors.secondaryColor,
+                          fontSize: getWidth(12),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                titleSpacing: getWidth(16),
+                titleSpacing: getWidth(8),
                 clipBehavior: Clip.none,
                 backgroundColor: AppColors.white,
                 surfaceTintColor: AppColors.transparent,

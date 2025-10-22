@@ -720,11 +720,13 @@ class Utils {
     final headers = {'Accept': 'application/json', 'authorization': serviceId};
     String xyz = "";
     try {
+      debugPrint("url : ${BaseUrl().baseUrl}girls-minds/read");
       final response = await getIt.get<RemoteDataSourceInit>().getRequest(
         url: "${BaseUrl().baseUrl}girls-minds/read",
         customHeader: headers,
         body: {NORWAY: YES},
       );
+      debugPrint("response : $response");
       if (Utils.checkIsNull(response["success"]) != true &&
           response["success"] == true) {
         xyz = response["data"]["norway"];
@@ -732,6 +734,7 @@ class Utils {
         return null;
       }
     } catch (e) {
+      print("in encrypted: ${e.toString()}");
       return null;
     }
     final key = utf8.encode(xyz);
