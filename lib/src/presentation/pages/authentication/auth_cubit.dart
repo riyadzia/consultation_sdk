@@ -48,11 +48,11 @@ class AuthCubit extends Cubit<AuthState> {
   // Get Active Health Card
   Future<void> getUserProfileData() async {
     SignallingService.instance.disconnect();
-    emit(state.copyWith(isLoading: true, isLoaded: false));
+    emit(state.copyWith(isLoading: true, isLoaded: false, error: ""));
     final result = await _repository.getUserDataById();
     result.fold(
       (error) {
-        emit(state.copyWith(isLoading: false));
+        emit(state.copyWith(isLoading: false, error: error.message));
       },
       (data) {
         Utils.initSignallingService(data.id);
