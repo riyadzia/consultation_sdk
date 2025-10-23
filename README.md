@@ -46,6 +46,77 @@ flutter pub get
 
 ---
 
+### Privacy Permission 
+#### Android
+
+CliniCall Consulation SDK requires `Camera` and `Microphone` Others permission to start a video call.
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- The Consulation SDK requires Bluetooth permissions in case users are using Bluetooth devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- For Android 12 and above devices, the following permission is also required. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+```
+
+Add this line in the `AndroidManifest.xml` file
+To keep audio/video calls running in the background, add it to the `Application` block of the `AndroidManifest.xml` file.
+
+`android:requestLegacyExternalStorage="true"
+ android:usesCleartextTraffic="true"`
+
+```xml
+
+<service
+        android:name="com.clinicall.consultation_sdk.CallForegroundService"
+        android:foregroundServiceType="camera|microphone"
+        android:exported="false"/>
+
+```
+
+#### iOS & macOS
+
+Open the `Info.plist` and add:
+
+```plist
+<key>NSAppTransportSecurity</key>
+    <dict>
+    	<key>NSAllowsArbitraryLoadsInWebContent</key>
+    	<true/>
+    	<key>NSAllowsLocalNetworking</key>
+    	<true/>
+    </dict>
+<key>NSAppleMusicUsageDescription</key>
+<string>Allow access to microphone for Audio/video call during doctor consultation</string>
+<key>NSCameraUsageDescription</key>
+<string>Updating user profile and using app functionality and audio/video call for doctor consultation</string>
+<key>NSDocumentDirectory</key>
+<string>Allow access to document directory for caching some data for using app better performance</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Allow access to microphone for Audio/video call during doctor consultation</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Updating user profile and using app functionality</string>
+<key>UIBackgroundModes</key>
+<array>
+	<string>fetch</string>
+	<string>remote-notification</string>
+	<string>voip</string>
+</array>
+
+```
+
+
 ## 🧩 Initialization
 
 In your app’s `main.dart`:
