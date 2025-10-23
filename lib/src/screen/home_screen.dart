@@ -56,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       context.read<AuthCubit>().getUserProfileData();
       context.read<AuthCubit>().setServiceToken(widget.serviceToken);
-      print("service id: ${widget.serviceToken}/${context.read<AuthCubit>().serviceToken}");
     }
     super.initState();
   }
