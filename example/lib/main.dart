@@ -1,9 +1,6 @@
 import 'package:consultation_sdk/consultation_sdk.dart';
 import 'package:consultation_sdk_example/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
