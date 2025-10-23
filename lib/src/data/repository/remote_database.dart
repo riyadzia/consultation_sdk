@@ -20,11 +20,6 @@ class RemoteDataSource extends RemoteDataSourceInit {
       'Authorization': Utils.getLoggedInUserToken(),
     };
     final uri = Uri.parse(url).replace(queryParameters: body);
-    if (kDebugMode) {
-      print(headers);
-      print("............... $customHeader ............");
-      debugPrint("My Get url = $uri");
-    }
     var dioClient = dio.Dio();
     final clientMethod = await dioClient.request(
       url,
@@ -55,17 +50,10 @@ class RemoteDataSource extends RemoteDataSourceInit {
     required Map<String, dynamic> body,
     required String url,
   }) async {
-    if (kDebugMode) {
-      print(url);
-      log(name: "Form Data: ", json.encode(body));
-      // debugPrint(json.encode(body));
-    }
-
     final headers = {
       'Accept': 'application/json',
       'Authorization': Utils.getLoggedInUserToken(),
     };
-    print(headers);
     var dioClient = dio.Dio();
     final clientMethod = await dioClient.request(
       url,
@@ -87,7 +75,6 @@ class RemoteDataSource extends RemoteDataSourceInit {
       final errorMsg = responseJsonBody["message"] ?? "Something went wrong";
       throw UnauthorisedException(errorMsg, 410);
     } else {
-      print("xxxxxxxxxxxxxx correct response xxxxxxxxxxxxxxx");
       return responseJsonBody;
     }
   }
@@ -97,20 +84,11 @@ class RemoteDataSource extends RemoteDataSourceInit {
     required Map<String, dynamic> body,
     required String url,
   }) async {
-    if (kDebugMode) {
-      debugPrint(json.encode(body));
-    }
-
     final headers = {
       HttpHeaders.contentTypeHeader: "application/json",
       'Accept': 'application/json',
       'Authorization': Utils.getLoggedInUserToken(),
     };
-
-    if (kDebugMode) {
-      print(url);
-    }
-
     var dioClient = dio.Dio();
     final clientMethod = await dioClient.request(
       url,
@@ -146,10 +124,6 @@ class RemoteDataSource extends RemoteDataSourceInit {
       'Authorization': Utils.getLoggedInUserToken(),
     };
 
-    if (kDebugMode) {
-      print(url);
-    }
-
     var dioClient = dio.Dio();
     final clientMethod = await dioClient.request(
       url,
@@ -179,36 +153,30 @@ class RemoteDataSource extends RemoteDataSourceInit {
   ) async {
     try {
       final response = callClientMethod();
-      if (kDebugMode) {
-        print("status code : ${response.statusCode}");
-      }
       return _dioResponseParser(response);
     } on SocketException {
-      log('SocketException', name: _className);
+      // log('SocketException', name: _className);
       throw const NetworkException(
         'Please check your \nInternet Connection',
         10061,
       );
     } on dio.DioException {
       ///503 Service Unavailable
-      log('http ClientException', name: _className);
+      // log('http ClientException', name: _className);
       throw const NetworkException('Service unavailable', 503);
     } on FormatException {
-      log('FormatException', name: _className);
+      // log('FormatException', name: _className);
       throw const DataFormatException('Data format exception', 422);
     } on InternalServerException {
-      log('TimeoutException', name: _className);
+      // log('TimeoutException', name: _className);
       throw const InternalServerException('Request timeout', 500);
     } on TimeoutException {
-      log('TimeoutException', name: _className);
+      // log('TimeoutException', name: _className);
       throw const NetworkException('Request timeout', 408);
     }
   }
 
   dynamic _dioResponseParser(dio.Response response) {
-    if (kDebugMode) {
-      print("${response.data} / ${response.statusCode}");
-    }
     switch (response.statusCode) {
       case 200:
         // var responseJson = json.decode(response.data);
@@ -246,7 +214,6 @@ class RemoteDataSource extends RemoteDataSourceInit {
         throw InvalidInputException(errorMsg, 422);
       case 429:
         ///Unprocessable Entity
-        print("((((((((((exception: 429))))))))))");
         final errorMsg = response.statusMessage ?? "Too many request";
         throw TooManyRequestException(errorMsg, 429);
       case 500:
@@ -280,7 +247,7 @@ class RemoteDataSource extends RemoteDataSourceInit {
         return errorsMap['message'].toString();
       }
     } catch (e) {
-      log(e.toString(), name: _className);
+      // log(e.toString(), name: _className);
     }
 
     return 'Unknown error';
@@ -297,7 +264,7 @@ class RemoteDataSource extends RemoteDataSourceInit {
         return errorsMap['message'].toString();
       }
     } catch (e) {
-      log(e.toString(), name: _className);
+      // log(e.toString(), name: _className);
     }
     return 'Credentials does not match';
   }

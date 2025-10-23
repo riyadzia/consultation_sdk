@@ -169,7 +169,6 @@ class CallingCubit extends Cubit<CallingState> {
     state.engine!.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          debugPrint("Local user ${connection.localUid} joined");
           emit(state.copyWith(localUserJoined: true));
           // make a call to remote peer over signalling
           socket!.emit('make-call', {
@@ -197,7 +196,6 @@ class CallingCubit extends Cubit<CallingState> {
           onRejectCall();
         },
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          debugPrint("Remote user $remoteUid joined");
           ringTimer?.cancel();
           emit(
             state.copyWith(
@@ -220,7 +218,6 @@ class CallingCubit extends Cubit<CallingState> {
               int remoteUid,
               UserOfflineReasonType reason,
             ) {
-              debugPrint("Remote user $remoteUid left");
               if (reason == UserOfflineReasonType.userOfflineQuit) {
                 updateCallHistory({"duration": state.duration});
               } else if (reason == UserOfflineReasonType.userOfflineDropped) {
@@ -232,7 +229,6 @@ class CallingCubit extends Cubit<CallingState> {
           emit(state.copyWith(isRemoteMute: muted));
         },
         onUserMuteVideo: (connection, remoteUid, muted) {
-          // print("onUserMuteVideo((((((((((${(muted)}/ $remoteUid/ ${connection.channelId}))))))))))");
           emit(state.copyWith(isRemoteVideoOn: !muted));
         },
         onUserStateChanged: (connection, remoteUid, state) {},
@@ -406,7 +402,6 @@ class CallingCubit extends Cubit<CallingState> {
 
   void onKernelStatus() {
     socket!.on("kernel-status-change", (data) {
-      // print("onKernelStatus((((((((($data)))))))))");
       emit(
         state.copyWith(
           isRemoteVideoOn: !data["isCameraOff"],
@@ -466,10 +461,6 @@ class CallingCubit extends Cubit<CallingState> {
       body.addAll({"doctor": state.receiverId});
       body.addAll({"amount": "0"});
       body.addAll({"isForFreeCall": true});
-
-      if (kDebugMode) {
-        print(body);
-      }
       final result = await _repository.bookAppointment(body);
       result.fold((error) {}, (data) {});
     }

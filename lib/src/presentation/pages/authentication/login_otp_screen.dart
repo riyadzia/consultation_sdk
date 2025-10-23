@@ -56,7 +56,6 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
       setState(() {
         errorText = "";
       });
-      print(">>>>>>>>>>>>>>>>>>>serviceId call Otp verify: ${widget.serviceToken}<<<<<<<<<<<<<<<<");
       context.read<AuthCubit>().verifyOtp(
         context,
         countryCode: widget.countryLetterCode,

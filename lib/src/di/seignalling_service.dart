@@ -37,14 +37,7 @@ class SignallingService {
 
 
   Future<void> disconnect() async {
-    if (kDebugMode) {
-      print("xxxxxxxxxxxxxxxxxx entry for socket disconnection xxxxxxxxxxxxxxxx");
-    }
-
     if (socket != null) {
-      if (kDebugMode) {
-        print("xxxxxxxxxxxxxxxxxx socket Disconnecting xxxxxxxxxxxxxxxx");
-      }
       try {
         socket?.offAny();       // ✅ remove all listeners
         socket?.disconnect();   // ✅ close socket

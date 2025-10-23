@@ -60,7 +60,6 @@ class _CallWaitingScreenState extends State<CallWaitingScreen> {
 
   void waitingForDoctorAvailable() {
     socket!.on("available-doctor", (data) async {
-      print("............. $data............");
       socket!.off("available-doctor");
       InHouseDoctorModel doctorModel = InHouseDoctorModel.fromJson(
         data["doctor"],

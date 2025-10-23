@@ -18,16 +18,10 @@ class RemoteVideo extends StatelessWidget {
           previous.isVideoOn != current.isVideoOn ||
           previous.isVideoIconAvailable != current.isVideoIconAvailable,
       builder: (context, state) {
-        print("remoteUid: ${state.remoteUid}");
-        print("callingStatus: ${state.callingStatus}");
-        print("isRemoteVideoOn: ${state.isRemoteVideoOn}");
-        print("isVideoOn: ${state.isVideoOn}");
-        print("isVideoIconAvailable: ${state.isVideoIconAvailable}");
         if (state.remoteUid != 0 &&
             state.callingStatus == CallingStatus.running &&
             state.isRemoteVideoOn &&
             state.isVideoIconAvailable) {
-          print("/////////////////showing remote video///////////////////");
           return AgoraVideoView(
             controller: VideoViewController.remote(
               rtcEngine: state.engine!, // Uses the Agora engine instance
@@ -46,7 +40,6 @@ class RemoteVideo extends StatelessWidget {
           );
         } else if (state.callingStatus == CallingStatus.calling || state.callingStatus == CallingStatus.ringing &&
             state.isVideoOn) {
-          print("///////////////// showing local video ///////////////////");
           return AgoraVideoView(
             controller: VideoViewController(
               rtcEngine: state.engine!,
@@ -61,7 +54,6 @@ class RemoteVideo extends StatelessWidget {
             ),
           );
         } else {
-          print("///////////////// showing video avater ///////////////////");
           return const AgoraCallerAvatar();
         }
       },

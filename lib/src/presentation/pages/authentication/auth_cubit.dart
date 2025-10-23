@@ -33,7 +33,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<String?> getS75() async {
-    print("((((((((((((serviceToken: $serviceToken))))))))))))");
     final result = await _repository.getS75(serviceToken);
     result.fold((error) {
       return null;
@@ -78,7 +77,6 @@ class AuthCubit extends Cubit<AuthState> {
     required String serviceId,
   }) async {
     _serviceToken = serviceId;
-    print("ServiceId verify Otp M: $serviceId/$_serviceToken");
     SignallingService.instance.disconnect();
     emit(state.copyWith(isLoading: true, isLoaded: false, error: ""));
     final body = <String, dynamic>{};
@@ -86,9 +84,6 @@ class AuthCubit extends Cubit<AuthState> {
     body.addAll({"dialCode": dialCode.trim()});
     body.addAll({"phone": phoneNumber.trim()});
     body.addAll({"otp": otp});
-    if (kDebugMode) {
-      print(body);
-    }
 
     String url = "${BaseUrl().baseUrl}auth/user/otp/signin/check";
 
@@ -155,10 +150,6 @@ class MyApi {
       return Left(ServerFailure("Invalid Token,Try again!", 410));
     }
     body.addAll({"country": country});
-    if (kDebugMode) {
-      print(body);
-    }
-
     String url = "${BaseUrl().baseUrl}auth/user/otp/signin";
 
     try {

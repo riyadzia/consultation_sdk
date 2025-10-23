@@ -201,37 +201,30 @@ class Utils {
     String startDate,
     String endDate,
   ) {
-    debugPrint("$amount / $type / $startDate / $endDate");
     double value = 0.0;
     DateTime start = DateTime.parse(startDate);
     DateTime end = DateTime.parse(endDate);
     var difference = end.difference(start).inDays;
-    debugPrint("first difference : $difference");
     difference = difference < 1 ? 1 : difference;
-    debugPrint("difference : $difference");
     if (type.toLowerCase().contains("week")) {
-      debugPrint("week");
       value =
           double.tryParse(
             (amount / (difference / 7).ceilToDouble()).toStringAsFixed(2),
           ) ??
           0;
     } else if (type.toLowerCase().contains("month")) {
-      debugPrint("month");
       value =
           double.tryParse(
             (amount / (difference / 30).ceilToDouble()).toStringAsFixed(2),
           ) ??
           0.0;
     } else if (type.toLowerCase().contains("year")) {
-      debugPrint("year");
       value =
           double.tryParse(
             (amount / (difference / 365).ceilToDouble()).toStringAsFixed(2),
           ) ??
           0.0;
     }
-    debugPrint("Calculated value : $value");
     return value;
   }
 
@@ -702,7 +695,6 @@ class Utils {
 
       // Step 3: Access the properties
       for (var item in parsedJson) {
-        // print('Property: ${item['property']}, Message: ${item['message']}');
         errorList.add(item["message"]);
       }
       return errorList;
@@ -720,13 +712,11 @@ class Utils {
     final headers = {'Accept': 'application/json', 'authorization': serviceId};
     String xyz = "";
     try {
-      debugPrint("url : ${BaseUrl().baseUrl}girls-minds/read");
       final response = await getIt.get<RemoteDataSourceInit>().getRequest(
         url: "${BaseUrl().baseUrl}girls-minds/read",
         customHeader: headers,
         body: {NORWAY: YES},
       );
-      debugPrint("response : $response");
       if (Utils.checkIsNull(response["success"]) != true &&
           response["success"] == true) {
         xyz = response["data"]["norway"];
@@ -734,7 +724,6 @@ class Utils {
         return null;
       }
     } catch (e) {
-      print("in encrypted: ${e.toString()}");
       return null;
     }
     final key = utf8.encode(xyz);

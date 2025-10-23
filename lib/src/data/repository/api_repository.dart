@@ -70,12 +70,6 @@ class ApiRepository extends ApiRepositoryInit {
   @override
   Future<Either<Failure, UserProfileModel>> getUserDataById() async {
     try {
-      // final jsonString = await rootBundle.loadString("assets/json/user_profile.json");
-      // UserProfileModel userProfileModel = UserProfileModel.fromJson(json.decode(jsonString));
-      // print("mmmmmmmmmmmm ${userProfileModel.fullName}/ $jsonString");
-      // return Right(userProfileModel);
-      //id 6796355cb04153ba21aec654 live
-      //id 687f3046be4423ac8e0612cb local
       final result = await _remoteDataSource.getRequest(
         url: "${BaseUrl().baseUrl}auth/user/getByToken",
       );
@@ -233,11 +227,9 @@ class ApiRepository extends ApiRepositoryInit {
       if(result["success"] == true){
         return Right(result["data"]["_id"]);
       } else {
-        print("............(create history error)............");
         return Left(ServerFailure("Something went wrong!\nTry Again", 410));
       }
     } on ServerException catch (e) {
-      print("............(create history error ${e.message})............");
       return Left(ServerFailure(e.message, e.statusCode));
     }
     ///todo will be remove the comment

@@ -35,8 +35,6 @@ class _EblPaymentScreenState extends State<EblPaymentScreen> {
         flexibleSpace: const AppPinkyCircleGradient(),
         leading: PageBackBorderButton(
           onPressed: () {
-            // print("$isSuccess");
-            // return;
             if (isSuccess) {
               // Navigator.pushAndRemoveUntil(
               //   context,
@@ -69,9 +67,6 @@ class _EblPaymentScreenState extends State<EblPaymentScreen> {
             )) {
               isSuccess = true;
             }
-          }
-          if (kDebugMode) {
-            print("(((((((((((((($url))))))))))))))");
           }
         },
         onLoadStop: (controller, url) {
@@ -110,10 +105,6 @@ class _EblPaymentScreenState extends State<EblPaymentScreen> {
         </body>
       </html>
     ''';
-
-    log(form);
-    // print(form);
-
     return form;
   }
 }

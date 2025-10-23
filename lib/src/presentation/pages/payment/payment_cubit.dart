@@ -79,9 +79,6 @@ class PaymentCubit extends Cubit<PaymentState> {
           getBkashPayment(context, canLoading: false);
         } else {
           Utils.closeDialog(ConsultationSdk().navigatorKey.currentState!.context);
-          if (kDebugMode) {
-            print("Payment signature response: ${error.message}");
-          }
           Utils.showMiddleToast(error.message);
           Future.delayed(const Duration(seconds: 1)).then((value) {
             // Get.find<CartController>().clearCart();
@@ -91,10 +88,6 @@ class PaymentCubit extends Cubit<PaymentState> {
       },
       (data) {
         Utils.closeDialog(ConsultationSdk().navigatorKey.currentState!.context);
-        if (kDebugMode) {
-          print("signature response: $data");
-        }
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -176,9 +169,6 @@ class PaymentCubit extends Cubit<PaymentState> {
     result.fold(
       (error) {
         Utils.closeDialog(ConsultationSdk().navigatorKey.currentState!.context);
-        if (kDebugMode) {
-          print("Payment signature response: ${error.message}");
-        }
         Utils.showMiddleToast(error.message);
         Future.delayed(const Duration(seconds: 1)).then((value) {
           // Get.find<CartController>().clearCart();
@@ -187,9 +177,6 @@ class PaymentCubit extends Cubit<PaymentState> {
       },
       (data) {
         Utils.closeDialog(ConsultationSdk().navigatorKey.currentState!.context);
-        if (kDebugMode) {
-          print("signature response: $data");
-        }
         // makeEBLPayment(orderModel,data,referenceNumber,dateTime,context);
         makeEBLPayment(data, referenceNumber, trId, dateTime, context);
       },
@@ -229,7 +216,6 @@ class PaymentCubit extends Cubit<PaymentState> {
         name: "Payment Data",
         "payment data: ${json.encode(paymentData)}",
       );
-      // debugPrint("payment data: ${json.encode(paymentData)}");
     }
 
     await Navigator.pushReplacement(
@@ -263,9 +249,6 @@ class PaymentCubit extends Cubit<PaymentState> {
       body.addAll({"discountPercent": state.discountPercentage});
     }
     body.addAll({"packageTitle": "${state.dataMap["packageTitle"] ?? ""}"});
-    if (kDebugMode) {
-      print(body);
-    }
     Utils.loadingDialog(context);
     final result = await _repository.buyPackage(body);
     result.fold(
@@ -302,7 +285,6 @@ class PaymentCubit extends Cubit<PaymentState> {
           var dataMap = state.dataMap;
           dataMap.addAll({"invoiceNumber": data.invoiceNumber});
           emit(state.copyWith(dataMap: dataMap));
-          print(state.dataMap);
           if (state.paymentType?.bankName == "bkash") {
             getBkashPayment(context);
           } else {

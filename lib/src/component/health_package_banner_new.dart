@@ -53,7 +53,6 @@ class HealthPackageBannerNewState extends State<HealthPackageBannerNew> {
     setState(() {
       packageList = List<PackageModel>.from(json.decode(jsonString)["data"]
           .map((x) => PackageModel.fromJson(x)));
-      print("((((((((( package length: ${packageList.length} )))))))))");
     });
 
   }
