@@ -52,7 +52,7 @@ flutter pub get
 CliniCall Consulation SDK requires `Camera` and `Microphone` Others permission to start a video call.
 
 ```xml
-<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -73,8 +73,8 @@ CliniCall Consulation SDK requires `Camera` and `Microphone` Others permission t
 Add this line in the `AndroidManifest.xml` file
 To keep audio/video calls running in the background, add it to the `Application` block of the `AndroidManifest.xml` file.
 
-`android:requestLegacyExternalStorage="true"
- android:usesCleartextTraffic="true"`
+`android:requestLegacyExternalStorage="true"`  
+`android:usesCleartextTraffic="true"`  
 
 ```xml
 
@@ -89,7 +89,7 @@ To keep audio/video calls running in the background, add it to the `Application`
 
 Open the `Info.plist` and add:
 
-```plist
+```xml
 <key>NSAppTransportSecurity</key>
     <dict>
     	<key>NSAllowsArbitraryLoadsInWebContent</key>
