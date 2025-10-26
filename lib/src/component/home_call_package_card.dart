@@ -57,7 +57,7 @@ class HomeCallPackageCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CustomText(text: "Active Health Package",
+                      CustomText(text: "Health Package",
                           fontSize: getWidth(13),
                           fontWeight: FontWeight.w400
                       ),
@@ -72,6 +72,9 @@ class HomeCallPackageCard extends StatelessWidget {
                           ),
                           Builder(
                               builder: (context) {
+                                if(state.activeHealthCardModel!.packageModel.packageVariation!.isEmpty){
+                                  return const SizedBox.shrink();
+                                }
                                 return CustomText(text: "${state.activeHealthCardModel?.packageModel.packageVariation?[0].duration?.capitalizeFirstLetter()}",
                                     fontSize: getWidth(12),
                                     fontWeight: FontWeight

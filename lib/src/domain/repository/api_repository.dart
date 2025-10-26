@@ -1,3 +1,4 @@
+import 'package:consultation_sdk/src/presentation/pages/settings/settings_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:consultation_sdk/src/core/error/failure.dart';
 import 'package:consultation_sdk/src/model/active_health_card_model.dart';
@@ -29,5 +30,7 @@ abstract class ApiRepositoryInit {
   Future<Either<Failure, String>> getEBLSignature(Map<String, String> formData);
   Future<Either<Failure, String>> eblPayment(Map<String, String> formData);
   Future<Either<Failure, String>> bKashPayemnt(Map<String, String> body);
+  /// banner
+  Future<Either<Failure, SettingModel>> getBanner();
 
 }

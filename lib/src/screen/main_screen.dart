@@ -1,3 +1,4 @@
+import 'package:consultation_sdk/src/presentation/pages/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:consultation_sdk/src/core/app_sizes.dart';
@@ -70,6 +71,9 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BlocProvider<PaymentCubit>(
             create: (BuildContext context) => PaymentCubit(context.read(),context.read()),
+          ),
+          BlocProvider<SettingsCubit>(
+            create: (BuildContext context) => SettingsCubit(context.read()),
           ),
         ],
         child: MaterialApp(

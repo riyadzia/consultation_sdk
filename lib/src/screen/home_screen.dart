@@ -4,6 +4,8 @@ import 'package:consultation_sdk/consultation_sdk.dart';
 import 'package:consultation_sdk/consultation_sdk_auth.dart';
 import 'package:consultation_sdk/src/global_widget/page_back__border_button.dart';
 import 'package:consultation_sdk/src/global_widget/page_refresh.dart';
+import 'package:consultation_sdk/src/presentation/pages/settings/home_banner.dart';
+import 'package:consultation_sdk/src/presentation/pages/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:consultation_sdk/src/component/call_option_dialog.dart';
@@ -56,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       context.read<AuthCubit>().getUserProfileData();
       context.read<AuthCubit>().setServiceToken(widget.serviceToken);
+      context.read<SettingsCubit>().getAppSettingData();
     }
     super.initState();
   }
@@ -63,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> onRefresh() async {
     context.read<AuthCubit>().getUserProfileData();
     context.read<HealthPackageCubit>().getServicePackage();
+    context.read<SettingsCubit>().getAppSettingData();
   }
 
   @override
@@ -304,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child: Icon(
                                                           Icons.call,
                                                           color: Colors.green,
-                                                          size: getWidth(30),
+                                                          size: getWidth(24),
                                                         ),
                                                       ),
                                                     ),
@@ -313,16 +317,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               SizedBox(height: getWidth(8)),
                                               CustomText(
-                                                text: "Call Doctor",
+                                                text: "Call Doctor 24/7",
                                                 fontSize: getWidth(14),
                                                 fontWeight: FontWeight.w500,
                                               ),
-                                              CustomText(
-                                                text: "24/7 Audio/Video",
-                                                fontSize: getWidth(12),
-                                                textAlign: TextAlign.center,
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                                              // CustomText(
+                                              //   text: "24/7 Audio/Video",
+                                              //   fontSize: getWidth(12),
+                                              //   textAlign: TextAlign.center,
+                                              //   fontWeight: FontWeight.w400,
+                                              // ),
                                             ],
                                           ),
                                         ),
@@ -341,6 +345,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
+                /// Banner
+                SliverToBoxAdapter(
+                  child: HomeBrandPromoterCard(),
+                ),
                 /// All Health Package...
                 SliverToBoxAdapter(
                   child: HomeHealthSlider(heading: "Health Package"),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:consultation_sdk/src/presentation/pages/settings/settings_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -343,6 +344,7 @@ class ApiRepository extends ApiRepositoryInit {
       return Left(ServerFailure(e.toString(), 410));
     }
   }
+
   @override
   Future<Either<Failure, String>> eblPayment(Map<String, String> formData) async {
     try {
@@ -354,6 +356,27 @@ class ApiRepository extends ApiRepositoryInit {
         return const Right("Payment Success");
       } else {
         return const Right("Payment Failed");
+      }
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message, e.statusCode));
+    }
+    catch (e){
+      debugPrint(e.toString());
+      return Left(ServerFailure(e.toString(), 410));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SettingModel>> getBanner() async {
+    try {
+      final result = await _remoteDataSource.getRequest(
+          url: "${BaseUrl().baseUrl}settings/find-all",
+      );
+      if(result["success"] == true){
+        SettingModel settingModel = SettingModel.fromJson(result["data"]);
+        return Right(settingModel);
+      } else {
+        return Left(ServerFailure(result["message"], 410));
       }
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message, e.statusCode));
