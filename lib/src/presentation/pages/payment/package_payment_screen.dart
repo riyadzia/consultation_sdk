@@ -30,9 +30,10 @@ class _PackagePaymentScreenState extends State<PackagePaymentScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {},
       child: BlocListener<PaymentCubit, PaymentState>(
-        listenWhen: (previous, current) => previous.paymentSuccess != current.paymentSuccess,
+        listenWhen: (previous, current) =>
+            previous.paymentSuccess != current.paymentSuccess,
         listener: (context, state) {
-          if(state.paymentSuccess){
+          if (state.paymentSuccess) {
             String userId = context.read<PaymentCubit>().userId;
             context.read<HealthPackageCubit>().getActiveHealthCard(userId);
             Navigator.of(context).pop();
@@ -79,6 +80,9 @@ class _PackagePaymentScreenState extends State<PackagePaymentScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               BlocBuilder<PaymentCubit, PaymentState>(
+                                buildWhen: (previous, current) =>
+                                    previous.discountPercentage !=
+                                    current.discountPercentage,
                                 builder: (context, state) {
                                   if (state.discountPercentage > 0) {
                                     return CustomText(
@@ -95,12 +99,17 @@ class _PackagePaymentScreenState extends State<PackagePaymentScreen> {
                               ),
                               BlocBuilder<PaymentCubit, PaymentState>(
                                 buildWhen: (previous, current) =>
-                                    previous.discountedPrice !=
-                                    current.discountedPrice,
+                                    previous.discountPercentage !=
+                                    current.discountPercentage,
                                 builder: (context, state) {
+                                  int discountedAmount =
+                                      state.amount -
+                                      (state.amount *
+                                              state.discountPercentage) ~/
+                                          100;
                                   return CustomText(
                                     // text: "${AppText().bdt} ${controller.dataMap["amount"] ?? ""}".convertEnglishToBangla(),
-                                    text: "BDT ${state.discountedPrice}",
+                                    text: "BDT $discountedAmount",
                                     color: AppColors.secondaryColor,
                                     fontSize: getWidth(22),
                                     fontWeight: FontWeight.w600,
@@ -122,78 +131,99 @@ class _PackagePaymentScreenState extends State<PackagePaymentScreen> {
                           ),
                         ],
                       ),
+
                       SizedBox(height: getWidth(20)),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) => Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(getWidth(10)),
-                            boxShadow: defaultBoxShadow(),
-                          ),
-                          child: Material(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(getWidth(10)),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(getWidth(10)),
-                              onTap: () {
-                                context.read<PaymentCubit>().changePaymentType(
-                                  bankTypeList[index],
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: getWidth(12),
-                                  vertical: getWidth(10),
+                      BlocBuilder<PaymentCubit, PaymentState>(
+                        buildWhen: (previous, current) =>
+                            previous.discountPercentage !=
+                            current.discountPercentage,
+                        builder: (context, state) {
+                          if (state.discountPercentage > 0) {
+                            int discountAmount =
+                                (state.amount * state.discountPercentage) ~/
+                                100;
+                            return CustomText(
+                              text: "💰 Saved: BDT $discountAmount",
+                              color: AppColors.greenColor,
+                              fontSize: getWidth(14),
+                            );
+                          } else {
+                            return CustomText(text: "", fontSize: getWidth(14));
+                          }
+                        },
+                      ),
+                      SizedBox(height: getWidth(20)),
+                      BlocBuilder<PaymentCubit, PaymentState>(
+                        buildWhen: (previous, current) => previous.paymentType != current.paymentType,
+                        builder: (context, state) {
+                          return RadioGroup(
+                            groupValue: state.paymentType,
+                            onChanged: (type) {
+                              context.read<PaymentCubit>().changePaymentType(
+                                type!,
+                              );
+                            },
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) => Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(getWidth(10)),
+                                  boxShadow: defaultBoxShadow(),
                                 ),
-                                child: Row(
-                                  children: [
-                                    CustomText(
-                                      text: bankTypeList[index].bankName
-                                          .capitalizeFirstLetter(),
-                                      color: AppColors.secondaryColor,
-                                      fontSize: getWidth(14),
-                                      fontWeight: FontWeight.w500,
+                                child: Material(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(getWidth(10)),
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(getWidth(10)),
+                                    onTap: () {
+                                      context.read<PaymentCubit>().changePaymentType(
+                                        bankTypeList[index],
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: getWidth(12),
+                                        vertical: getWidth(10),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          CustomText(
+                                            text: bankTypeList[index].bankName
+                                                .capitalizeFirstLetter(),
+                                            color: AppColors.secondaryColor,
+                                            fontSize: getWidth(14),
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          const Spacer(),
+                                          ...List.generate(
+                                            bankTypeList[index].logoList.length,
+                                                (iconIndex) {
+                                              return CustomImage(
+                                                path: bankTypeList[index]
+                                                    .logoList[iconIndex],
+                                                height: getWidth(30),
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(width: getWidth(8)),
+                                          Radio(
+                                            activeColor: AppColors.mainColor,
+                                            value: bankTypeList[index],
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                    const Spacer(),
-                                    ...List.generate(
-                                      bankTypeList[index].logoList.length,
-                                      (iconIndex) {
-                                        return CustomImage(
-                                          path: bankTypeList[index]
-                                              .logoList[iconIndex],
-                                          height: getWidth(30),
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(width: getWidth(8)),
-                                    BlocBuilder<PaymentCubit, PaymentState>(
-                                      buildWhen: (previous, current) =>
-                                          previous.paymentType !=
-                                          current.paymentType,
-                                      builder: (context, state) {
-                                        return Radio(
-                                          activeColor: AppColors.mainColor,
-                                          value: bankTypeList[index],
-                                          groupValue: state.paymentType,
-                                          onChanged: (type) {
-                                            context
-                                                .read<PaymentCubit>()
-                                                .changePaymentType(type!);
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: getWidth(12)),
+                              itemCount: bankTypeList.length,
                             ),
-                          ),
-                        ),
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: getWidth(12)),
-                        itemCount: bankTypeList.length,
+                          );
+                        },
                       ),
                       SizedBox(height: getWidth(30)),
                     ],

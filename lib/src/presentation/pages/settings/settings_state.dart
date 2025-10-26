@@ -22,16 +22,24 @@ class SettingsState {
 
 class SettingModel {
   final String sdkBanner;
+  final int cardDiscount;
+  final int bkashDiscount;
 
   SettingModel({
     required this.sdkBanner,
+    required this.cardDiscount,
+    required this.bkashDiscount,
   });
 
   SettingModel copyWith({
     String? sdkBanner,
+    int? cardDiscount,
+    int? bkashDiscount,
   }) =>
       SettingModel(
         sdkBanner: sdkBanner ?? this.sdkBanner,
+        cardDiscount: cardDiscount ?? this.cardDiscount,
+        bkashDiscount: bkashDiscount ?? this.bkashDiscount,
       );
 
   factory SettingModel.fromRawJson(String str) => SettingModel.fromJson(json.decode(str));
@@ -40,9 +48,13 @@ class SettingModel {
 
   factory SettingModel.fromJson(Map<String, dynamic> json) => SettingModel(
     sdkBanner: json["sdk_banner"] ?? "",
+    cardDiscount: json["card_discount"] ?? 0,
+    bkashDiscount: json["bkash_discount"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {
     "sdk_banner": sdkBanner,
+    "card_discount": cardDiscount,
+    "bkash_discount": bkashDiscount,
   };
 }

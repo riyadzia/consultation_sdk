@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as dev;
+import 'package:consultation_sdk/src/presentation/pages/settings/settings_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,8 @@ class PaymentCubit extends Cubit<PaymentState> {
   static final PaymentState _initialState = PaymentState(dataMap: {});
   final ApiRepositoryInit _repository;
   final AuthCubit _authCubit;
-  PaymentCubit(this._repository, this._authCubit) : super(_initialState);
+  final SettingsCubit _settingsCubit;
+  PaymentCubit(this._repository, this._authCubit,this._settingsCubit) : super(_initialState);
 
   Map<String,dynamic> fuckMap = {};
 
@@ -36,12 +38,20 @@ class PaymentCubit extends Cubit<PaymentState> {
         discountedPrice: dataMap["discountedPrice"],
         amount: dataMap["amount"],
         startPayment: DateTime.now().millisecond,
+        paymentType: null,
+        paymentSuccess: null,
       ),
     );
   }
 
   void changePaymentType(BankTypeModel paymentType) {
-    emit(state.copyWith(paymentType: paymentType));
+    if(paymentType.bankName == "bkash"){
+      int discount = _settingsCubit.state.settingModel!.bkashDiscount;
+      emit(state.copyWith(paymentType: paymentType,discountPercentage: discount));
+    } else {
+      int discount = _settingsCubit.state.settingModel!.cardDiscount;
+      emit(state.copyWith(paymentType: paymentType,discountPercentage: discount,));
+    }
   }
 
   void paymentSuccessStatus(bool status){
@@ -244,9 +254,12 @@ class PaymentCubit extends Cubit<PaymentState> {
       body.addAll({"userDialCode": state.dataMap["userDialCode"]});
       body.addAll({"gift": "gift"});
     }
-    if (state.discountPercentage != 0) {
+    if (state.discountPercentage > 0) {
       body.addAll({"discountedPrice": state.amount - getOfferAmount()});
       body.addAll({"discountPercent": state.discountPercentage});
+    }
+    if (getDiscountPercentReason().isNotEmpty) {
+      body.addAll({"discountReason": getDiscountPercentReason().trim()});
     }
     body.addAll({"packageTitle": "${state.dataMap["packageTitle"] ?? ""}"});
     Utils.loadingDialog(context);
@@ -301,5 +314,17 @@ class PaymentCubit extends Cubit<PaymentState> {
       offerPrice = (state.amount * state.discountPercentage) ~/ 100;
     }
     return offerPrice;
+  }
+
+  String getDiscountPercentReason(){
+    String reason = "";
+    if(state.discountPercentage > 0){
+      if(state.paymentType?.bankName == "bkash"){
+        reason = "Bkash - Flat ${state.discountPercentage}%";
+      } else {
+        reason = "Card - Flat ${state.discountPercentage}%";
+      }
+    }
+    return reason;
   }
 }

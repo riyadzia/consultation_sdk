@@ -69,11 +69,11 @@ class _MainScreenState extends State<MainScreen> {
               context.read(),
             ),
           ),
-          BlocProvider<PaymentCubit>(
-            create: (BuildContext context) => PaymentCubit(context.read(),context.read()),
-          ),
           BlocProvider<SettingsCubit>(
             create: (BuildContext context) => SettingsCubit(context.read()),
+          ),
+          BlocProvider<PaymentCubit>(
+            create: (BuildContext context) => PaymentCubit(context.read(),context.read(),context.read()),
           ),
         ],
         child: MaterialApp(
