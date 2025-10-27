@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,17 +91,24 @@ class _CallWaitingScreenState extends State<CallWaitingScreen> {
 
   final audioPlayer = AudioPlayer();
   void playWaitingTone()async {
-    await audioPlayer.setUrl("http://clinicall-files.obs.as-south-208.rcloud.reddotdigitalit.com/upload-file-22102025T113906-call_waiting.wav");
-    audioPlayer.setLoopMode(LoopMode.one);
+    try{
+      // await audioPlayer.setUrl("http://clinicall-files.obs.as-south-208.rcloud.reddotdigitalit.com/upload-file-22102025T113906-call_waiting.wav");
+      await audioPlayer.setUrl("http://clinicall-files.obs.as-south-208.rcloud.reddotdigitalit.com/upload-file-27102025T181055-call_waiting.mp3");
+      audioPlayer.setLoopMode(LoopMode.one);
 
-    if(widget.isVideo){
-      audioPlayer.setVolume(0.6);
-      // CallManager.setEarpiece(isEarpiece: false);
-    } else {
-      audioPlayer.setVolume(1);
-      CallManager.setEarpiece();
+      if(widget.isVideo){
+        audioPlayer.setVolume(0.6);
+        // CallManager.setEarpiece(isEarpiece: false);
+      } else {
+        audioPlayer.setVolume(1);
+        CallManager.setEarpiece();
+      }
+      audioPlayer.play();
+    } catch (e){
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
-    audioPlayer.play();
   }
   void pause(){
     if(audioPlayer.playing){
