@@ -139,7 +139,7 @@ class MyApi {
     body.addAll({"countryCode": countryLetterCode.trim()});
     body.addAll({"dialCode": dialCode.replaceAll("+", "")});
     body.addAll({"phone": "${phoneNumber.trim()}:$salt:$time"});
-    body.addAll({"provider": "app"});
+    body.addAll({"provider": "sdk"});
     final String? country = await Utils.encryptText(
       phoneNumber.trim(),
       salt,
