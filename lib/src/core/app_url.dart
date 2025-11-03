@@ -1,7 +1,7 @@
 class BaseUrl {
   // static const String _rootUrl = "http://192.168.10.10:5000/";
   static const String _rootUrl = "https://theclinicall.com/";
-  static const String callingSocketUrl = "http://theclinicall.com:5006";
+  static const String callingSocketUrl = "https://webcall.theclinicall.com";
   // static const String callingSocketUrl = "http://192.168.10.10:5006";
   String get webSiteUrl => _rootUrl;
   // String get webSiteUrl => "http://192.168.10.230:3000/";
