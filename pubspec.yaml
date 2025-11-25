@@ -1,6 +1,6 @@
 name: consultation_sdk
 description: "A Doctor Consultation SDK by CliniCall"
-version: 0.0.1
+version: 1.0.0
 homepage:
 
 environment:
