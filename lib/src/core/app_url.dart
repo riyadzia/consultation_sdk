@@ -12,4 +12,6 @@ class BaseUrl {
   String eblPaymentLive = 'https://secureacceptance.cybersource.com/pay';
   // String eblPaymentLive = 'https://testsecureacceptance.cybersource.com/pay';
   static String bKashPayemnt = '${BaseUrl().baseUrl}admin/bkash/payment/create';
+  static String showPrescription(String appointmentId) => '${BaseUrl().webSiteUrl}showmobileprescription?appoitment=$appointmentId';
+  static String getAppointment(userId) => '${BaseUrl().baseUrl}doctor/appointment/getByUserId/$userId';
 }

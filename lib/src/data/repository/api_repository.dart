@@ -283,7 +283,7 @@ class ApiRepository extends ApiRepositoryInit {
   Future<Either<Failure, List<AppointmentModel>>> getAppointmentList(String userId) async {
     try {
       final result = await _remoteDataSource.getRequest(
-        url: "RemoteUrls.getAppointment(userId)",
+        url: BaseUrl.getAppointment(userId),
       );
       if(result["success"] == true){
         List<AppointmentModel> appointmentList =

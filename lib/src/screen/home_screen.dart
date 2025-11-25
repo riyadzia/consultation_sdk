@@ -4,6 +4,7 @@ import 'package:consultation_sdk/consultation_sdk.dart';
 import 'package:consultation_sdk/consultation_sdk_auth.dart';
 import 'package:consultation_sdk/src/global_widget/page_back__border_button.dart';
 import 'package:consultation_sdk/src/global_widget/page_refresh.dart';
+import 'package:consultation_sdk/src/presentation/pages/my_appointment/appointment_screen.dart';
 import 'package:consultation_sdk/src/presentation/pages/settings/home_banner.dart';
 import 'package:consultation_sdk/src/presentation/pages/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +175,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   floating: true,
                   pinned: true,
                   snap: true,
-                  actions: [SizedBox(width: getWidth(10))],
+                  actions: [
+                    IconButton(onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyAppointmentScreen(),
+                        ),
+                      );
+                    }, icon: Icon(Icons.menu)),
+                    SizedBox(width: getWidth(10))
+                  ],
                   collapsedHeight: isSmallDevice() ? getWidth(180) : getWidth(140),
                   expandedHeight: isSmallDevice() ? getWidth(180) : getWidth(140),
                   flexibleSpace: Stack(

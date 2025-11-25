@@ -1,3 +1,4 @@
+import 'package:consultation_sdk/src/presentation/pages/my_appointment/appointment_cubit.dart';
 import 'package:consultation_sdk/src/presentation/pages/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,6 +69,9 @@ class _MainScreenState extends State<MainScreen> {
               context.read(),
               context.read(),
             ),
+          ),
+          BlocProvider<AppointmentCubit>(
+            create: (BuildContext context) => AppointmentCubit(context.read(),context.read()),
           ),
           BlocProvider<SettingsCubit>(
             create: (BuildContext context) => SettingsCubit(context.read()),
