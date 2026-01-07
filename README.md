@@ -34,7 +34,7 @@ Add this SDK to your **host app**:
 dependencies:
   consultation_sdk:
     git:
-    url: https://github.com/riyadzia/clinicall_sdk.git
+    url: https://github.com/riyadzia/consultation_sdk
     ref: main
 ```
 
