@@ -15,6 +15,6 @@ class BankTypeModel {
 }
 
 const List<BankTypeModel> bankTypeList = [
-  BankTypeModel("bkash",[AppIcons.bkashLogo]),
+  // BankTypeModel("bkash",[AppIcons.bkashLogo]),
   BankTypeModel("Card Payment",[AppIcons.masterCard,AppIcons.visa]),
 ];

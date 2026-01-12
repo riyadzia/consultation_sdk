@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
-  ConsultationSdk().initialize(serviceKey: "DJ4AZ25ZGYMOA5K3PDP6MGIRIWC9IEIHGZ5XRTT2WI0798TO80OJT7FT5D54G34Z",navigatorKey: navigatorKey);
+  ConsultationSdk().initialize(serviceKey: "",navigatorKey: navigatorKey);
   runApp(const MyApp());
 }
 
